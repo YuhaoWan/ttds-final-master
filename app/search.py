@@ -17,8 +17,10 @@ def index():
 
 @bp.route('/search', methods=('GET', 'POST'))
 def search():
-    global query
+    # global query
     query = request.form['keyword']
+    with open('./app/data/pickle/search_keyword.pickle', 'wb') as f1:
+        pickle.dump(query, f1)
 
     start_time = time.time()
     data_dict = a.algorithm('default', query)
@@ -43,9 +45,10 @@ def search():
 
 @bp.route('/songs', methods=('GET', 'POST'))
 def search_Songs():
-    # start_time = time.time()
+    with open('./app/data/pickle/search_keyword.pickle', 'rb') as f1:
+        query = pickle.load(f1)
+
     data_dict = a.algorithm('song', query)
-    # duration_time = time.time() - start_time
 
     page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
     total = len(data_dict)
@@ -67,6 +70,8 @@ def search_Songs():
 @bp.route('/artists', methods=('GET', 'POST'))
 def artists():
     # start_time = time.time()
+    with open('./app/data/pickle/search_keyword.pickle', 'rb') as f1:
+        query = pickle.load(f1)
     data_dict = a.algorithm('artist', query)
     # duration_time = time.time() - start_time
 
@@ -90,6 +95,8 @@ def artists():
 @bp.route('/albums', methods=('GET', 'POST'))
 def albums():
     # start_time = time.time()
+    with open('./app/data/pickle/search_keyword.pickle', 'rb') as f1:
+        query = pickle.load(f1)
     data_dict = a.algorithm('album', query)
     # duration_time = time.time() - start_time
 
@@ -113,6 +120,8 @@ def albums():
 @bp.route('/lyrics', methods=('GET', 'POST'))
 def search_Lyrics():
     # start_time = time.time()
+    with open('./app/data/pickle/search_keyword.pickle', 'rb') as f1:
+        query = pickle.load(f1)
     data_dict = a.algorithm('lyrics', query)
     # duration_time = time.time() - start_time
 
